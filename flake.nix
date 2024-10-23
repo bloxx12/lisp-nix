@@ -24,7 +24,6 @@
           sbcl --script main.lisp > $out
         '';
       });
-
     jeson = builtins.fromJSON (builtins.toString (builtins.readFile to-json));
   in {
     devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
