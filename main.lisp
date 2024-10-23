@@ -3,10 +3,11 @@
 (asdf:load-system 'yason)
 
 (yason:encode
-          (list (alexandria:plist-hash-table
-                 '("foo" 1 "bar" (7 8 9))
+
+(alexandria:plist-hash-table
+                 '("y" 1 "x" (7 8 9))
                  :test #'equal)
-                2 3 4
-                '(5 6 7)
-                t nil)
+                 ;         (list (alexandria:plist-hash-table
+                 ; '("foo" 1 "bar" (7 8 9))
+                 ; :test #'equal))
           *standard-output*)

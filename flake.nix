@@ -15,6 +15,7 @@
     pkgsForEach = nixpkgs.legacyPackages;
   in {
     packages = forEachSystem (system: rec {
+      default = to-json;
       to-json = pkgsForEach.${system}.stdenv.mkDerivation {
         name = "cl-to-json";
         src = ./.;
@@ -26,8 +27,8 @@
           sbcl --script main.lisp > $out
         '';
       };
-      default = let
-        jeson = builtins.fromJSON (builtins.readFile "${to-json}");
+      to-nix = let
+        jeson = builtins.fromJSON (builtins.toString (builtins.readFile to-json));
       in
         pkgsForEach.${system}.stdenv.mkDerivation {
           name = "json-to-nix";
@@ -43,5 +44,9 @@
         (sbcl.withPackages (ps: with ps; [yason alexandria]))
       ];
     };
+
+    nixosConfigurations."test" = nixpkgs.legacyPackages.x86_64-linux.lib.nixosSystem {
+      system = "x86_64-linux"
+    }
   };
 }
