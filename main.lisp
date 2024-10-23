@@ -1,6 +1,7 @@
 (load (sb-ext:posix-getenv "ASDF"))
 (asdf:load-system 'alexandria)
 (asdf:load-system 'yason)
+
 (yason:encode
           (list (alexandria:plist-hash-table
                  '("foo" 1 "bar" (7 8 9))
