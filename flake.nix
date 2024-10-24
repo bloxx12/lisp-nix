@@ -9,7 +9,7 @@
     self,
     nixpkgs,
   }: let
-    systems = ["x86_64-linux" "aarch64-linux"];
+    systems = ["x86_64-linux"];
     forEachSystem = nixpkgs.lib.genAttrs systems;
     pkgsForEach = nixpkgs.legacyPackages;
 
@@ -31,6 +31,18 @@
         (sbcl.withPackages (ps: with ps; [yason alexandria]))
       ];
     };
+    packages = forEachSystem (system: {
+      default = pkgsForEach.${system}.stdenv.mkDerivation {
+        name = "cl-to-json";
+        src = ./.;
+        nativeBuildInputs = with pkgsForEach.${system}; [
+          (sbcl.withPackages (ps: with ps; [yason alexandria]))
+        ];
+        buildPhase = ''
+          sbcl --script main.lisp > $out
+        '';
+      };
+    });
 
     nixosConfigurations."test" = nixpkgs.legacyPackages.x86_64-linux.lib.nixosSystem {
       system = "x86_64-linux";

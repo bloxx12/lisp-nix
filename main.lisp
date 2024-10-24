@@ -4,6 +4,6 @@
 
 (yason:encode
 (alexandria:plist-hash-table
-                 '("y" 1 "x" (7 8 9))
-                 :test #'equal)
+                 '("y" 1
+                    "x" (7 8 9)))
           *standard-output*)
