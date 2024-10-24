@@ -15,7 +15,7 @@
 
     to-json = forEachSystem (system:
       pkgsForEach.${system}.stdenv.mkDerivation {
-        name = "cl-to-json";
+        name = "cl-json";
         src = ./.;
         nativeBuildInputs = with pkgsForEach.${system}; [
           (sbcl.withPackages (ps: with ps; [yason alexandria]))
