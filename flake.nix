@@ -31,18 +31,7 @@
         (sbcl.withPackages (ps: with ps; [yason alexandria]))
       ];
     };
-    packages = forEachSystem (system: {
-      default = pkgsForEach.${system}.stdenv.mkDerivation {
-        name = "cl-to-json";
-        src = ./.;
-        nativeBuildInputs = with pkgsForEach.${system}; [
-          (sbcl.withPackages (ps: with ps; [yason alexandria]))
-        ];
-        buildPhase = ''
-          sbcl --script main.lisp > $out
-        '';
-      };
-    });
+    packages = to-json;
 
     nixosConfigurations."test" = nixpkgs.legacyPackages.x86_64-linux.lib.nixosSystem {
       system = "x86_64-linux";
