@@ -26,11 +26,14 @@
       });
     jeson = builtins.fromJSON (builtins.toString (builtins.readFile to-json));
   in {
-    devShells.x86_64-linux.default = nixpkgs.legacyPackages.x86_64-linux.mkShell {
-      buildInputs = with nixpkgs.legacyPackages.x86_64-linux; [
-        (sbcl.withPackages (ps: with ps; [yason alexandria]))
-      ];
-    };
+    devShells = forEachSystem (system: {
+      default = pkgsForEach.${system}.mkShell {
+        buildInputs = with pkgsForEach.${system}; [
+          (sbcl.withPackages (ps: with ps; [yason alexandria]))
+        ];
+      };
+    });
+
     packages = forEachSystem (system: {
       default = pkgsForEach.${system}.stdenv.mkDerivation {
         name = "cl-to-json";
