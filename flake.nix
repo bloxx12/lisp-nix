@@ -20,7 +20,7 @@
       nativeBuildInputs = with pkgs; [
         (sbcl.withPackages (ps: with ps; [yason alexandria]))
       ];
-      buildPhase = ''
+      installPhase = ''
         sbcl --script main.lisp > $out
       '';
     };
@@ -37,6 +37,7 @@
         };
       }
     );
+
     nixosConfigurations."test" = nixpkgs.legacyPackages.x86_64-linux.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
